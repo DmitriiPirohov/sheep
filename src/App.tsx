@@ -1,24 +1,45 @@
 import React from 'react';
-import logo from './logo.svg';
+import { Routes, Route } from 'react-router-dom';
 import './App.css';
+import { Header } from './components/header';
+import { HomePage } from './components/RulesPage';
+import { ShopPage } from './components/List/ShopPage';
+import { AddGoods } from './components/addGoods';
+import { Zaglushka } from './components/zaglushka';
+import { useAppSelector } from './app/hooks';
+import { useDispatch } from 'react-redux';
+import { actions } from './features/goods';
 
-function App() {
+function App () {
+  const admin = useAppSelector(state => state.user || '');
+  const data = useAppSelector(state => state.goods || []);
+  const dispatch = useDispatch();
+
+  React.useEffect(() => {
+    if(data.length === 0) {
+      fetch('https://dummyjson.com/products?limit=100&select=id,title,description,price,images,rating,stock,category')
+        .then(res => res.json())
+        .then(good => {
+          dispatch(actions.setGoods(good.products));
+        }
+        )
+        .catch();
+    }
+  }, []);
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Header />
+
+      <Routes>
+        <Route path="Home" element={<HomePage />} />
+        <Route path="Shop" element={admin === 'admin'? <ShopPage /> : <Zaglushka />} />
+        <Route path="AddGoods" element={admin === 'admin'? <AddGoods /> : <Zaglushka />} />
+
+        <Route path="*" element={
+          <p>Page not found</p>
+        } />
+      </Routes>
     </div>
   );
 }
