@@ -34,6 +34,10 @@ export const AddGoods = () => {
 
     dispatch(actions.addGoods([...data, { "id": index, "description": autor, "rating": rate, "title": good }]));
 
+    nulli(index);
+  }
+
+  function nulli (index: number) {
     fetch('https://dummyjson.com/products/add', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -45,13 +49,20 @@ export const AddGoods = () => {
       })
     })
       .then(res => res.json())
-      // .then(console.log);
+      .then(
+      // () => dispatch(actions.addGoods([...data, { "id": index, "description": autor, "rating": rate, "title": good }])),
+      // () => nulli()
+    )
+    // .then(console.log);
 
-    SetGood('');
-    SetAutor('');
-    SetYear('');
-    SetRate('');
     SetAlerton1(true);
+
+    setTimeout(() => {
+      SetGood('');
+      SetAutor('');
+      SetYear('');
+      SetRate('');
+    }, 1000)
   }
 
 
@@ -244,7 +255,7 @@ export const AddGoods = () => {
 
                 <Button
                   disabled={disableButton}
-                  type='submit'
+                  // type='submit'
                   sx={{ m: '15px 0 0 0', width: '100%', height: '3.65em' }}
                   variant='outlined'
                   onClick={handleAddGood}

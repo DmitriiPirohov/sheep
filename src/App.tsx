@@ -2,7 +2,7 @@ import React from 'react';
 import { Routes, Route } from 'react-router-dom';
 import './App.css';
 import { Header } from './components/header';
-import { HomePage } from './components/RulesPage';
+import { HomePage } from './components/rulesPage';
 import { ShopPage } from './components/List/ShopPage';
 import { AddGoods } from './components/addGoods';
 import { Zaglushka } from './components/zaglushka';
